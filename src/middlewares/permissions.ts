@@ -16,8 +16,7 @@ export function is(rolesRoutes: string) {
         message: "User not found",
       });
     }
-
-    if (!user.role.includes(rolesRoutes)) {
+    if (rolesRoutes !== user.role || user.id !== userId) { 
       return res.status(401).json({
         message: "User not authorized",
       });

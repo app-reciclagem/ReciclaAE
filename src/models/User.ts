@@ -1,6 +1,10 @@
-import { MinLength, Matches, IsNotEmpty, IsString } from "class-validator";
+import { MinLength, Matches, IsNotEmpty, IsString, IsOptional } from "class-validator";
 
 export class User {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
   @IsString()
   @IsNotEmpty()
   email: string;
@@ -12,4 +16,13 @@ export class User {
     message: "password too weak",
   })
   password: string;
+
+  @IsString()
+  @IsOptional()
+  photo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  role: string;
+
 }

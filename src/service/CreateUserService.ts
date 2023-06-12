@@ -1,11 +1,10 @@
 import { hash } from "bcrypt";
-import { UserRequest } from "../models/UserRequest";
 import { User } from "models/User";
 import { prisma } from "../database/prismaClient";
 
 export class CreateUserService {
-  async execute({ password, email, role }: UserRequest): Promise<Error | User> {
-    const existUser = await prisma.user.findUnique({
+  async execute({ name, photo, password, email, role }: User): Promise<Error | User> {
+   const existUser = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -16,10 +15,12 @@ export class CreateUserService {
     }
 
     const passwordHash = await hash(password, 10);
-
+    console.log(passwordHash);
     try {
       const user = await prisma.user.create({
         data: {
+          name,
+          photo,
           email,
           password: passwordHash,
           role,
@@ -30,6 +31,7 @@ export class CreateUserService {
 
       return user;
     } catch (error) {
+      console.log(error);
       return new Error("Failed to create user");
     }
   }

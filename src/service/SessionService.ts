@@ -1,10 +1,11 @@
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { prisma } from "../database/prismaClient";
+import { UserRequest } from "../models/UserRequest"
 import { User } from "../models/User";
 
 export class SessionService {
-  async execute({ email, password }: User) {
+  async execute({ email, password }: UserRequest) {
     const user = await prisma.user.findUnique({
       where: {
         email,
