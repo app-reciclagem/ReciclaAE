@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UpdateUserService } from "../service/UpdateUserService";
-import { User } from "../models/User";
+import { UpdateUserService } from "../../service/users/UpdateUserService";
+import { User } from "../../models/User";
 import { hash } from "bcrypt"
 
 export class UpdateUserController {

@@ -1,6 +1,6 @@
 import { hash } from "bcrypt";
 import { User } from "models/User";
-import { prisma } from "../database/prismaClient";
+import { prisma } from "../../database/prismaClient";
 
 export class CreateUserService {
   async execute({ name, photo, password, email, role }: User): Promise<Error | User> {

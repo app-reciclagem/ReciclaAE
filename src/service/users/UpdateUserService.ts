@@ -1,5 +1,5 @@
 import { User } from "models/User";
-import { prisma } from "../database/prismaClient";
+import { prisma } from "../../database/prismaClient";
 
 export class UpdateUserService {
   async execute(data: User, id: string): Promise<Error | User> {

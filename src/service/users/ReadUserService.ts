@@ -1,5 +1,5 @@
 import { User } from "models/User";
-import { prisma } from "../database/prismaClient";
+import { prisma } from "../../database/prismaClient";
 
 export class ReadUserService {
   async execute(id : string): Promise<Error | User> {

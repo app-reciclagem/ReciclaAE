@@ -20,3 +20,16 @@ model user {
 
   @@map("users")
 }
+
+model point {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  latitude  Float
+  longitude Float
+  name      String   @unique
+  tipoLixo  String[]
+  city      String
+  state     String
+  photo     String
+
+  @@map("points")
+}

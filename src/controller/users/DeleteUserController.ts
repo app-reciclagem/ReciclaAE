@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { ReadUserService } from "../service/ReadUserService";
+import { DeleteUserService } from "../../service/users/DeleteUserService";
 
-export class ReadUserController {
+export class DeleteUserController {
   async handle(req: Request, res: Response) {
     const  id  = req.params.id as string;
     console.log(id);
 
-    const readUserService = new ReadUserService();
-    const result = await readUserService.execute( id );
+    const deleteUserService = new DeleteUserService();
+    const result = await deleteUserService.execute( id );
 
     if (result instanceof Error) {
       return res.status(400).json(result.message);
