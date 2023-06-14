@@ -7,6 +7,7 @@ import { ReadUserController } from "../controller/users/ReadUserController";
 import { UpdateUserController } from "../controller/users/UpdateUserController";
 import { is } from "../middlewares/permissions";
 import { CreatePointController } from "../controller/points/CreatePointController";
+import { DeletePointController } from "../controller/points/DeletePointController";
 
 const routes = Router();
 
@@ -17,6 +18,7 @@ routes.get("/users/:id" , authenticateToken(), is("Admin"),new ReadUserControlle
 routes.patch("/users" , authenticateToken(), is("Admin"),new UpdateUserController().handle);
 
 routes.post("/points",authenticateToken(), is("Admin"), new CreatePointController().handle );
+routes.delete("/points/:id" , authenticateToken(), is("Admin"), new DeletePointController().handle);
 
 export { routes };
 
