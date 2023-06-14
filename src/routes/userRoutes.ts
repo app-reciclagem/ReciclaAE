@@ -5,9 +5,15 @@ import { DeleteUserController } from "../controller/users/DeleteUserController";
 import { authenticateToken } from "../middlewares/authenticateToken";
 import { ReadUserController } from "../controller/users/ReadUserController";
 import { UpdateUserController } from "../controller/users/UpdateUserController";
+
 import { is } from "../middlewares/permissions";
+
 import { CreatePointController } from "../controller/points/CreatePointController";
 import { DeletePointController } from "../controller/points/DeletePointController";
+import {ReadPointController} from "../controller/points/ReadPointController"
+import { UpdatePointController } from "../controller/points/UpdatePointController";
+import { ReadUniquePointController } from "../controller/points/ReadUniquePointController";
+
 
 const routes = Router();
 
@@ -19,6 +25,10 @@ routes.patch("/users" , authenticateToken(), is("Admin"),new UpdateUserControlle
 
 routes.post("/points",authenticateToken(), is("Admin"), new CreatePointController().handle );
 routes.delete("/points/:id" , authenticateToken(), is("Admin"), new DeletePointController().handle);
+routes.get("/points",authenticateToken(), new ReadPointController().handle);
+routes.get("/points/:id", authenticateToken(),new ReadUniquePointController().handle);
+routes.patch("/points/:id", authenticateToken(), is("Admin"),new UpdatePointController().handle)
+
 
 export { routes };
 
