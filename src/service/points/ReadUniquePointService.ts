@@ -1,18 +1,18 @@
 import { Point } from "../../models/Point";
 import { prisma } from "../../database/prismaClient";
+import { NotFoundError } from "../../helpers/api-erros";
 
 export class ReadUniquePointService {
-  async execute(id : string): Promise<Error | Point> {
+  async execute(id: string): Promise<Error | Point> {
     try {
       const point = await prisma.point.findUnique({
-        where:{
-            id
-        }
+        where: {
+          id,
+        },
       });
       return point;
     } catch (error) {
-      console.log(error);
-      return new Error("Point not found");
+      throw new NotFoundError("Point not found");
     }
   }
 }

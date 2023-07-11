@@ -1,7 +1,6 @@
-import { MinLength, Matches, IsNotEmpty, IsString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsString, Matches, MinLength } from "class-validator";
 
-export class UserRequest {
-
+export class UserLogin {
   @IsString()
   @IsNotEmpty()
   email: string;
@@ -13,5 +12,4 @@ export class UserRequest {
     message: "password too weak",
   })
   password: string;
-
 }

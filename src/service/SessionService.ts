@@ -1,11 +1,18 @@
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
+
 import { prisma } from "../database/prismaClient";
-import { UserRequest } from "../models/UserRequest"
+import { UserLogin } from "../models/UserLogin";
 import { User } from "../models/User";
+import { ConflictError, UnauthorizedError } from "../helpers/api-erros";
+
+type SessionServiceResult = [User, string];
 
 export class SessionService {
-  async execute({ email, password }: UserRequest) {
+  async execute({
+    email,
+    password,
+  }: UserLogin): Promise<Error | SessionServiceResult> {
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -13,19 +20,21 @@ export class SessionService {
     });
 
     if (!user) {
-      return new Error("User does not exists!");
+      return new ConflictError("User or Password incorrect");
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      return new Error("User or Password incorrect");
+      return new UnauthorizedError("User or Password incorrect");
     }
 
     const token = sign({}, process.env.JWT_SECRET, {
       subject: user.id,
     });
 
-    return token;
+    user.password = undefined;
+
+    return [user, token];
   }
 }

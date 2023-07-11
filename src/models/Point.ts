@@ -1,36 +1,45 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class Point {
   @IsString()
   @IsOptional()
-  id?: string
+  id?: string;
 
   @IsString()
   @IsNotEmpty()
-  name?: string;
+  name: string;
 
   @IsNumber()
   @IsNotEmpty()
-  latitude?: number;
+  latitude: number;
 
   @IsNumber()
   @IsNotEmpty()
-  longitude?: number;
+  longitude: number;
+
+  @IsArray()
+  @IsNotEmpty()
+  tipoLixo: string[];
 
   @IsString()
   @IsNotEmpty()
-  tipoLixo? : string[];
+  city: string;
 
   @IsString()
   @IsNotEmpty()
-  city     ?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  state ?   :string ;
+  state: string;
 
   @IsString()
   @IsOptional()
   photo?: string;
 
+  @IsString()
+  @IsNotEmpty()
+  createdById: string;
 }

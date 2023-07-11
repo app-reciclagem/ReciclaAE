@@ -5,8 +5,12 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import dotenv from "dotenv";
-import { routes } from "./routes/userRoutes";
+
 import errorHandlingMiddleware from "./middlewares/errorHandling";
+
+import usersRoutes from "./routes/user.routes";
+import authRoutes from "./routes/auth.routes";
+import pointsRoutes from "./routes/points.routes";
 
 const app = express();
 dotenv.config();
@@ -19,7 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(compression());
 
-app.use(routes);
+app.use(authRoutes);
+app.use(usersRoutes);
+app.use(pointsRoutes);
 
 app.use(errorHandlingMiddleware);
 

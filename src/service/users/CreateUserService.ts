@@ -1,21 +1,31 @@
 import { hash } from "bcrypt";
 import { User } from "models/User";
 import { prisma } from "../../database/prismaClient";
+import { ConflictError } from "../../helpers/api-erros";
+import { SessionService } from "../SessionService";
+
+type SessionServiceResult = [User, string];
 
 export class CreateUserService {
-  async execute({ name, photo, password, email, role }: User): Promise<Error | User> {
-   const existUser = await prisma.user.findUnique({
+  async execute({
+    name,
+    photo,
+    password,
+    email,
+    role,
+  }: User): Promise<Error | SessionServiceResult> {
+    const userExist = await prisma.user.findUnique({
       where: {
         email,
       },
     });
 
-    if (existUser) {
-      return new Error("User already exists");
+    if (userExist) {
+      throw new ConflictError("User already exists");
     }
 
     const passwordHash = await hash(password, 10);
-    console.log(passwordHash);
+
     try {
       const user = await prisma.user.create({
         data: {
@@ -27,12 +37,12 @@ export class CreateUserService {
         },
       });
 
-      user.password = undefined;
+      const sessionService = new SessionService();
+      const result = sessionService.execute({ email, password });
 
-      return user;
+      return result;
     } catch (error) {
-      console.log(error);
-      return new Error("Failed to create user");
+      throw new Error("An error occurred while creating the user");
     }
   }
 }

@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   name     String
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   email    String  @unique
@@ -18,10 +18,12 @@ model user {
   role     String
   photo    String?
 
+  points Point[]
+
   @@map("users")
 }
 
-model point {
+model Point {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   latitude  Float
   longitude Float
@@ -29,7 +31,10 @@ model point {
   tipoLixo  String[]
   city      String
   state     String
-  photo     String
+  photo     String?
+
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById String @db.ObjectId
 
   @@map("points")
 }

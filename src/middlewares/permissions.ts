@@ -1,5 +1,6 @@
 import { prisma } from "../database/prismaClient";
 import { Request, Response, NextFunction } from "express";
+import { UnauthorizedError } from "../helpers/api-erros";
 
 export function is(rolesRoutes: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -11,15 +12,8 @@ export function is(rolesRoutes: string) {
       },
     });
 
-    if (!user) {
-      return res.status(401).json({
-        message: "User not found",
-      });
-    }
-    if (rolesRoutes !== user.role || user.id !== userId) { 
-      return res.status(401).json({
-        message: "User not authorized",
-      });
+    if (rolesRoutes !== user.role || user.id !== userId) {
+      throw new UnauthorizedError("Access denied");
     }
 
     next();

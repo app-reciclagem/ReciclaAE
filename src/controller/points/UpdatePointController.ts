@@ -1,50 +1,43 @@
 import { Request, Response } from "express";
 import { UpdatePointService } from "../../service/points/UpdatePointService";
 import { Point } from "../../models/Point";
+import { ValidationError, validate } from "class-validator";
+import { BadRequestError } from "../../helpers/api-erros";
 
 export class UpdatePointController {
   async handle(request: Request, response: Response) {
-    
-    const updatePoint = new Point()
-   const id = request.params.id
+    const updatePoint = new Point();
+    const id = request.params.id;
 
-    if(request.body.name) {
-    updatePoint.name = request.body.name
+    updatePoint.name = request.body.name;
+    updatePoint.latitude = request.body.latitude;
+    updatePoint.longitude = request.body.longitude;
+    updatePoint.tipoLixo = request.body.tipoLixo;
+    updatePoint.city = request.body.city;
+    updatePoint.state = request.body.state;
+    updatePoint.photo = request.body.photo;
+    updatePoint.createdById = request.userId;
+
+    const validations: ValidationError[] = await validate(updatePoint);
+
+    if (validations.length) {
+      const errors: string[] = [];
+
+      validations.forEach((validationError: ValidationError) => {
+        Object.values(validationError.constraints).forEach(
+          (message: string) => {
+            errors.push(message);
+          }
+        );
+      });
+
+      throw new BadRequestError(errors.join(", "));
     }
 
-  if(request.body.name) {
-    updatePoint.name = request.body.name
-    }
-  if(request.body.latitude) {
-    updatePoint.latitude = request.body.latitude
-    }
-  if(request.body.longitude) {
-    updatePoint.longitude = request.body.longitude
-    }
+    const updatePointService = new UpdatePointService();
 
-  if(request.body.tipoLixo) {
-    updatePoint.tipoLixo = request.body.tipoLixo
-    }
+    const result = await updatePointService.execute(updatePoint, id);
 
-  if(request.body.city) {
-    updatePoint.city = request.body.city
-    }
-  if(request.body.state) {
-    updatePoint.state = request.body.state
-    }
-  if(request.body.photo) {
-    updatePoint.photo = request.body.photo
-    }
-        
-
-const updatePointService = new UpdatePointService();
-
-const result = await updatePointService.execute(updatePoint, id);
-
-if (result instanceof Error) {
-  return response.status(400).json(result.message);
-}
-
-return response.json(result);
-}
+    return response.json(result);
+  }
 }

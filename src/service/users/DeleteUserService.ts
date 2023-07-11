@@ -1,20 +1,21 @@
-import { hash } from "bcrypt";
-import { User } from "models/User";
 import { prisma } from "../../database/prismaClient";
 
 export class DeleteUserService {
-  async execute(id : string): Promise<Error | Boolean> {
+  async execute(id: string): Promise<Error | string> {
     try {
       const user = await prisma.user.delete({
-        where:{
-            id
-        }
+        where: {
+          id,
+        },
       });
 
-      return true;
+      if (user) {
+        return "User successfully deleted";
+      } else {
+        throw new Error("Failed to delete user");
+      }
     } catch (error) {
-      console.log(error);
-      return new Error("Failed to delete user");
+      throw new Error("An error occurred while deleting the user");
     }
   }
 }

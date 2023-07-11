@@ -3,21 +3,19 @@ import { prisma } from "../../database/prismaClient";
 
 export class UpdateUserService {
   async execute(data: User, id: string): Promise<Error | User> {
-    
-
     try {
       const userUpdate = await prisma.user.update({
-        where:{
-            id
-        }, data
+        where: {
+          id,
+        },
+        data,
       });
 
       userUpdate.password = undefined;
 
       return userUpdate;
     } catch (error) {
-      console.log(error);
-      return new Error("Failed to update user");
+      throw new Error("Failed to update user");
     }
   }
 }

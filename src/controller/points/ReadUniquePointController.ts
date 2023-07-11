@@ -3,15 +3,10 @@ import { ReadUniquePointService } from "../../service/points/ReadUniquePointServ
 
 export class ReadUniquePointController {
   async handle(req: Request, res: Response) {
-    const  id  = req.params.id as string;
-    console.log(id);
+    const id = req.params.id as string;
 
     const readPointService = new ReadUniquePointService();
-    const result = await readPointService.execute( id );
-
-    if (result instanceof Error) {
-      return res.status(400).json(result.message);
-    }
+    const result = await readPointService.execute(id);
 
     return res.json(result);
   }
