@@ -4,16 +4,8 @@ import { prisma } from "../../database/prismaClient";
 import { ConflictError } from "../../helpers/api-erros";
 import { SessionService } from "../SessionService";
 
-type SessionServiceResult = [User, string];
-
 export class CreateUserService {
-  async execute({
-    name,
-    photo,
-    password,
-    email,
-    role,
-  }: User): Promise<Error | SessionServiceResult> {
+  async execute({ name, photo, password, email, role }: User) {
     const userExist = await prisma.user.findUnique({
       where: {
         email,

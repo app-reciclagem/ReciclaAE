@@ -30,6 +30,7 @@ export class SessionController {
     const sessionService = new SessionService();
 
     const result = await sessionService.execute(userLogin);
+    console.log(result);
 
     return response.json(result);
   }

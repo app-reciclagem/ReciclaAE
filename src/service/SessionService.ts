@@ -9,10 +9,7 @@ import { ConflictError, UnauthorizedError } from "../helpers/api-erros";
 type SessionServiceResult = [User, string];
 
 export class SessionService {
-  async execute({
-    email,
-    password,
-  }: UserLogin): Promise<Error | SessionServiceResult> {
+  async execute({ email, password }: UserLogin) {
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -35,6 +32,6 @@ export class SessionService {
 
     user.password = undefined;
 
-    return [user, token];
+    return { user, token };
   }
 }
