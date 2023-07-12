@@ -5,8 +5,20 @@ import { Point } from "../../models/Point";
 import { BadRequestError } from "../../helpers/api-erros";
 import { CreatePointService } from "../../service/points/CreatePointService";
 
+import upload from "../../middlewares/uploadImage";
+
 export class CreatePointController {
   async handle(request: Request, response: Response) {
+    await new Promise<void>((resolve, reject) => {
+      upload.single('photo')(request, response, (err: any) => {
+        if (err) {
+          reject(new BadRequestError("Erro ao fazer upload da imagem"));
+        } else {
+          resolve();
+        }
+      });
+    });
+
     const createPoint = new Point();
 
     createPoint.name = request.body.name;
@@ -15,7 +27,7 @@ export class CreatePointController {
     createPoint.tipoLixo = request.body.tipoLixo;
     createPoint.city = request.body.city;
     createPoint.state = request.body.state;
-    createPoint.photo = request.body.photo;
+    createPoint.photo = request.file ? request.file.filename : null;
     createPoint.createdById = request.userId;
 
     const validations: ValidationError[] = await validate(createPoint);
