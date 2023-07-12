@@ -5,6 +5,7 @@ import { DeletePointController } from "../controller/points/DeletePointControlle
 import { ReadPointController } from "../controller/points/ReadPointController";
 import { UpdatePointController } from "../controller/points/UpdatePointController";
 import { ReadUniquePointController } from "../controller/points/ReadUniquePointController";
+import { FindPointController } from "../controller/points/FindPointController";
 
 import { authenticateToken } from "../middlewares/authenticateToken";
 import { is } from "../middlewares/permissions";
@@ -26,6 +27,11 @@ pointsRoutes.get(
   "/points/:id",
   authenticateToken(),
   new ReadUniquePointController().handle
+);
+pointsRoutes.get(
+  "/points/search/:name",
+  authenticateToken(),
+  new FindPointController().handle
 );
 pointsRoutes.delete(
   "/points/:id",
