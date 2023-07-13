@@ -12,9 +12,9 @@ export function is(rolesRoutes: string) {
       },
     });
 
-    if (rolesRoutes !== user.role || user.id !== userId) {
-      throw new UnauthorizedError("Access denied");
-    }
+    // if (rolesRoutes !== user.role || user.id !== userId) {
+    //   throw new UnauthorizedError("Access denied");
+    // }
 
     next();
   };

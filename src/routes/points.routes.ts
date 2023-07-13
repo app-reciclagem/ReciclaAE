@@ -20,7 +20,7 @@ pointsRoutes.post(
 );
 pointsRoutes.get(
   "/points",
-  authenticateToken(),
+  // authenticateToken(),
   new ReadPointController().handle
 );
 pointsRoutes.get(

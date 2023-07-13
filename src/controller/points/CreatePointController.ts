@@ -24,11 +24,11 @@ export class CreatePointController {
     createPoint.name = request.body.name;
     createPoint.latitude = request.body.latitude;
     createPoint.longitude = request.body.longitude;
-    createPoint.tipoLixo = request.body.tipoLixo;
+    createPoint.tipoLixo = [];
     createPoint.city = request.body.city;
     createPoint.state = request.body.state;
     createPoint.photo = request.file ? request.file.filename : null;
-    createPoint.createdById = request.userId;
+    createPoint.createdById = '64ae1b50565dfb5f6134e3b3';
 
     const validations: ValidationError[] = await validate(createPoint);
 
@@ -45,6 +45,8 @@ export class CreatePointController {
 
       throw new BadRequestError(errors.join(", "));
     }
+
+    console.log(request.body);
 
     const creatPointService = new CreatePointService();
 

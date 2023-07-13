@@ -24,8 +24,8 @@ export class Point {
   longitude: number;
 
   @IsArray()
-  @IsNotEmpty()
-  tipoLixo: string[];
+  @IsOptional()
+  tipoLixo?: string[];
 
   @IsString()
   @IsNotEmpty()
@@ -40,6 +40,6 @@ export class Point {
   photo?: string;
 
   @IsString()
-  @IsNotEmpty()
-  createdById: string;
+  @IsOptional()
+  createdById?: string;
 }
