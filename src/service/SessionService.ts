@@ -2,11 +2,8 @@ import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 
 import { prisma } from "../database/prismaClient";
+import { NotFoundError, UnauthorizedError } from "../helpers/api-erros";
 import { UserLogin } from "../models/UserLogin";
-import { User } from "../models/User";
-import { ConflictError, UnauthorizedError } from "../helpers/api-erros";
-
-type SessionServiceResult = [User, string];
 
 export class SessionService {
   async execute({ email, password }: UserLogin) {
@@ -17,13 +14,15 @@ export class SessionService {
     });
 
     if (!user) {
-      return new ConflictError("User or Password incorrect");
+      throw new NotFoundError("User or Password incorrect!");
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      return new UnauthorizedError("User or Password incorrect");
+      console.log("here");
+
+      throw new UnauthorizedError("User or Password incorrect");
     }
 
     const token = sign({}, process.env.JWT_SECRET, {
