@@ -8,7 +8,7 @@ import upload from "../../middlewares/uploadImage";
 export class CreateUserController {
   async handle(request: Request, response: Response) {
     await new Promise<void>((resolve, reject) => {
-      upload.single('photo')(request, response, (err: any) => {
+      upload.single("photo")(request, response, (err: any) => {
         if (err) {
           reject(new BadRequestError("Erro ao fazer upload da imagem"));
         } else {
@@ -17,13 +17,13 @@ export class CreateUserController {
       });
     });
 
+    const createUserService = new CreateUserService();
     const newUser = new User();
 
     newUser.email = request.body.email;
     newUser.name = request.body.name;
     newUser.password = request.body.password;
     newUser.photo = request.file ? request.file.filename : null;
-    // newUser.photo = request.body.photo;
     newUser.role = request.body.role;
 
     const validations: ValidationError[] = await validate(newUser);
@@ -39,13 +39,16 @@ export class CreateUserController {
         );
       });
 
-      throw new BadRequestError(errors.join(", "));
+      return response
+        .status(400)
+        .json({ error: "validation error", messages: errors });
     }
 
-    const createUserService = new CreateUserService();
-
-    const result = await createUserService.execute(newUser);
-
-    return response.json(result);
+    try {
+      const result = await createUserService.execute(newUser);
+      return response.json(result);
+    } catch (error) {
+      return response.status(error.statusCode).json({ error: error.message });
+    }
   }
 }

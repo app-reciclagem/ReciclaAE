@@ -18,23 +18,23 @@ export class CreateUserService {
 
     const passwordHash = await hash(password, 10);
 
-    try {
-      const user = await prisma.user.create({
-        data: {
-          name,
-          photo,
-          email,
-          password: passwordHash,
-          role,
-        },
-      });
+    const user = await prisma.user.create({
+      data: {
+        name,
+        photo,
+        email,
+        password: passwordHash,
+        role,
+      },
+    });
 
-      const sessionService = new SessionService();
-      const result = sessionService.execute({ email, password });
-
-      return result;
-    } catch (error) {
+    if (!user) {
       throw new Error("An error occurred while creating the user");
     }
+
+    const sessionService = new SessionService();
+    const result = sessionService.execute({ email, password });
+
+    return result;
   }
 }
