@@ -1,4 +1,11 @@
-import { MinLength, Matches, IsNotEmpty, IsString, IsOptional } from "class-validator";
+import {
+  MinLength,
+  Matches,
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsBoolean,
+} from "class-validator";
 
 export class User {
   @IsString()
@@ -25,4 +32,11 @@ export class User {
   @IsNotEmpty()
   role: string;
 
+  @IsNotEmpty()
+  @IsBoolean()
+  termosDeUso: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  politicaPrivacidade: boolean;
 }

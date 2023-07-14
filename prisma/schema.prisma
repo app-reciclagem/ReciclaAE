@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  name     String
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
-  password String
-  role     String
-  photo    String?
+  name                String
+  id                  String  @id @default(auto()) @map("_id") @db.ObjectId
+  email               String  @unique
+  password            String
+  role                String
+  photo               String?
+  termosDeUso         Boolean
+  politicaPrivacidade Boolean
 
   points Point[]
 

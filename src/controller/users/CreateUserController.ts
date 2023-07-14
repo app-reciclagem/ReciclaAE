@@ -19,12 +19,15 @@ export class CreateUserController {
 
     const createUserService = new CreateUserService();
     const newUser = new User();
-
     newUser.email = request.body.email;
     newUser.name = request.body.name;
     newUser.password = request.body.password;
     newUser.photo = request.file ? request.file.filename : null;
     newUser.role = request.body.role;
+    newUser.politicaPrivacidade = request.body.politicaPrivacidade
+      ? true
+      : false;
+    newUser.termosDeUso = request.body.termosDeUso ? true : false;
 
     const validations: ValidationError[] = await validate(newUser);
 
@@ -39,6 +42,7 @@ export class CreateUserController {
         );
       });
 
+      console.log("here2", newUser);
       return response
         .status(400)
         .json({ error: "validation error", messages: errors });

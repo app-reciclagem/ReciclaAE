@@ -5,7 +5,15 @@ import { ConflictError } from "../../helpers/api-erros";
 import { SessionService } from "../SessionService";
 
 export class CreateUserService {
-  async execute({ name, photo, password, email, role }: User) {
+  async execute({
+    name,
+    photo,
+    password,
+    email,
+    role,
+    politicaPrivacidade,
+    termosDeUso,
+  }: User) {
     const userExist = await prisma.user.findUnique({
       where: {
         email,
@@ -25,6 +33,8 @@ export class CreateUserService {
         email,
         password: passwordHash,
         role,
+        termosDeUso,
+        politicaPrivacidade,
       },
     });
 

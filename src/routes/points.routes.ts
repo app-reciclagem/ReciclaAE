@@ -9,6 +9,7 @@ import { FindPointController } from "../controller/points/FindPointController";
 
 import { authenticateToken } from "../middlewares/authenticateToken";
 import { is } from "../middlewares/permissions";
+import { FindPointTermController } from "../controller/points/FindPointTermController";
 
 const pointsRoutes = Router();
 
@@ -32,6 +33,11 @@ pointsRoutes.get(
   "/points/search/:name",
   authenticateToken(),
   new FindPointController().handle
+);
+pointsRoutes.get(
+  "/points/searchterm/:term",
+  authenticateToken(),
+  new FindPointTermController().handle
 );
 pointsRoutes.delete(
   "/points/:id",
